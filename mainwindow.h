@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QDialog>
+#include "filling.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_released();
+
 private:
     Ui::MainWindow *ui;
+    Filling *filling;
 };
 #endif // MAINWINDOW_H
