@@ -9,14 +9,14 @@ Filling::Filling(QWidget *parent) :
     ui->setupUi(this);
 
     //QTableView view;
-    QSqlTableModel model;
+    /*QSqlTableModel model;
 
     model.setTable("Person");
     model.select();
     model.setEditStrategy(QSqlTableModel::OnFieldChange);
 
     ui->tableView->setModel(&model);
-    ui->tableView->show();
+    ui->tableView->show();*/
 }
 
 Filling::~Filling()
