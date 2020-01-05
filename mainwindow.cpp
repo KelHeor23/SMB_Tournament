@@ -19,3 +19,4 @@ void MainWindow::on_pushButton_released()
     filling = new Filling(this);
     filling->show();
 }
+//GIT SUKA
