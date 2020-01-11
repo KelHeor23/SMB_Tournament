@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     w.show();
     ///a
     ///
-    QSqlDatabase sdb = QSqlDatabase::addDatabase("QSQLITE");
+    /*QSqlDatabase sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName("TournamentData.sqlite");
 
     if (!sdb.open())
@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
                         "to build it.\n\n"
                         "Click Cancel to exit."), QMessageBox::Cancel);
         return -1;
-    }
+    }*/
 
-    QSqlQuery query;
+    /*QSqlQuery query;
 
     query.exec("CREATE TABLE [Person]([FIO] NVARCHAR(50), [Club] INT, [Sex] INT, [Age] INT)");
     query.exec("insert into Person (FIO, Club, Sex, Age) values ('Dasha', 1, 1, 1)"); //Для проверок
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     model.setEditStrategy(QSqlTableModel::OnRowChange);
 
     view.setModel(&model);
-    view.show();
+    view.show();*/
 
 
     return a.exec();

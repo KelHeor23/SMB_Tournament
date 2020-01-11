@@ -8,15 +8,15 @@ Filling::Filling(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //QTableView view;
-    /*QSqlTableModel model;
+    db = new DataBase();
+    db->connectToDataBase();
 
-    model.setTable("Person");
-    model.select();
-    model.setEditStrategy(QSqlTableModel::OnFieldChange);
+    model = new QSqlTableModel(this);
+    model->setTable("Person");
 
-    ui->tableView->setModel(&model);
-    ui->tableView->show();*/
+    ui->tableView->setModel(model);
+
+    model->select();
 }
 
 Filling::~Filling()

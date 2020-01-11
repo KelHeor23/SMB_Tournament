@@ -2,6 +2,8 @@
 #define FILLING_H
 
 #include <QDialog>
+#include <QSqlTableModel>
+#include "database.h"
 
 namespace Ui {
 class Filling;
@@ -17,6 +19,9 @@ public:
 
 private:
     Ui::Filling *ui;
+
+    DataBase        *db;
+    QSqlTableModel  *model;
 };
 
 #endif // FILLING_H
