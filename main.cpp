@@ -27,6 +27,16 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    QSqlQuery query;
+
+    query.exec("CREATE TABLE [Person]([FIO] NVARCHAR(50), [Club] INT, [Sex] INT, [Age] INT)");
+    query.exec("insert into Person (FIO, Club, Sex, Age) values ('Dasha', 1, 1, 1)"); //Для проверок
+
+    query.exec("CREATE TABLE [Club]([Name] NVARCHAR(50))");
+    query.exec("insert into Club (Name) values ('Excalibur')"); //Для проверок
+
+
+
     QTableView view;
     QSqlTableModel model;
 
@@ -36,6 +46,7 @@ int main(int argc, char *argv[])
 
     view.setModel(&model);
     view.show();
+
 
     return a.exec();
 }
