@@ -31,11 +31,13 @@ Filling::Filling(QWidget *parent) :
     ui->tablePersons->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Устанавливаем режим выделения лишь одно строки в таблице
     ui->tablePersons->setSelectionMode(QAbstractItemView::SingleSelection);
-    // Устанавливаем размер колонок по содержимому
-    ui->tablePersons->resizeColumnsToContents();
     ui->tablePersons->setItemDelegate(new QSqlRelationalDelegate(ui->tablePersons));
     ui->tablePersons->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tablePersons->horizontalHeader()->setStretchLastSection(true);
+    // Устанавливаем размер колонок по содержимому
+    ui->tablePersons->resizeColumnsToContents();
+    ui->tablePersons->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->tablePersons->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
     ui->tableClubs->setModel(modelClub);     // Устанавливаем модель на TableView
     ui->tableClubs->setColumnHidden(0, true);    // Скрываем колонку с id записей
@@ -43,11 +45,11 @@ Filling::Filling(QWidget *parent) :
     ui->tableClubs->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Устанавливаем режим выделения лишь одно строки в таблице
     ui->tableClubs->setSelectionMode(QAbstractItemView::SingleSelection);
-    // Устанавливаем размер колонок по содержимому
-    ui->tableClubs->resizeColumnsToContents();
     ui->tableClubs->setItemDelegate(new QSqlRelationalDelegate(ui->tableClubs));
     ui->tableClubs->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableClubs->horizontalHeader()->setStretchLastSection(true);
+    // Устанавливаем размер колонок по содержимому
+    ui->tableClubs->resizeColumnsToContents();
 
     modelPersons->select();
     modelPersons->setEditStrategy(QSqlTableModel::OnRowChange);
