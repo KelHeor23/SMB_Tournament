@@ -2,7 +2,7 @@
 #define FILLING_H
 
 #include <QDialog>
-#include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
 #include "database.h"
 
 namespace Ui {
@@ -21,7 +21,8 @@ private:
     Ui::Filling *ui;
 
     DataBase        *db;
-    QSqlTableModel  *model;
+    QSqlRelationalTableModel *modelPersons;
+    QSqlRelationalTableModel *modelClub;
 };
 
 #endif // FILLING_H
