@@ -59,7 +59,7 @@ void Filling::m_Per()
     modelPersons->setHeaderData(4, Qt::Horizontal, "Возраст");
 
     ui->tablePersons->setModel(modelPersons);
-//  ui->tablePersons->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    ui->tablePersons->setColumnHidden(0, true);    // Скрываем колонку с id записей
     ui->tablePersons->setSelectionBehavior(QAbstractItemView::SelectRows);
     // выделение лишь одно строки в таблице
     ui->tablePersons->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -79,7 +79,7 @@ void Filling::m_Club()
     modelClub->setHeaderData(1, Qt::Horizontal, "Название");
 
     ui->tableClubs->setModel(modelClub);
-//  ui->tableClubs->setColumnHidden(0, true);
+    ui->tableClubs->setColumnHidden(0, true);
     ui->tableClubs->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableClubs->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableClubs->setItemDelegate(new QSqlRelationalDelegate(ui->tableClubs));
