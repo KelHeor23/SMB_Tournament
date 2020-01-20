@@ -16,6 +16,8 @@ class Filling : public QDialog
 public:
     explicit Filling(QWidget *parent = nullptr);
     ~Filling();
+    void m_Per();
+    void m_Club();
 
 private slots:
     void on_pushButton_released();
