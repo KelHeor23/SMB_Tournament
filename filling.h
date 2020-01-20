@@ -19,6 +19,7 @@ public:
     void m_Per();
     void m_Club();
 
+
 private slots:
     void on_pushButton_released();
 

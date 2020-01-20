@@ -2,10 +2,8 @@
 #include "ui_filling.h"
 #include "QtSql"
 #include <QTableView>
-
 #include <QAbstractTableModel>
 #include <QList>
-
 
 Filling::Filling(QWidget *parent) :
     QDialog(parent),
@@ -22,7 +20,7 @@ Filling::Filling(QWidget *parent) :
 
     m_Club();
     modelClub->select();
-    modelClub->setEditStrategy(QSqlTableModel::OnRowChange);
+    modelClub->setEditStrategy(QSqlTableModel::OnFieldChange);
 }
 
 Filling::~Filling()
@@ -33,18 +31,18 @@ Filling::~Filling()
 void Filling::on_pushButton_released()
 {
 
-    QSqlQuery query;
-            query.exec("insert into Club (ID_Club) values ('')");
-            modelClub->select();
-            while(modelClub->canFetchMore())
-            {
-              modelClub->fetchMore();
-            }
-    modelPersons->select();
+    modelClub->insertRow(modelClub->rowCount(QModelIndex()));
+
+    m_Per();                 // обновить список клубов
+    modelPersons->select();  //
+
 }
-/* Удаление выбранной строки
-model->removeRows(ui->tableView->currentIndex().row(), 1);
-model->select(); */
+
+/* Удаление выбранной строки в tableView
+model->removeRows(ui->modelPersons->currentIndex().row(), 1);
+model->select();
+P.s. надо бы все в одну кнопку, чтоб при нажатии на форму, он менял модель
+*/
 
 
 

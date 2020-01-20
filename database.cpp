@@ -75,13 +75,13 @@ bool DataBase::createTable()
     QSqlQuery query;
 
     if(!query.exec("CREATE TABLE [Person]("
-                   "[ID_Person] INT PRIMARY KEY ON CONFLICT REPLACE NOT NULL,"
+                   "ID_Person INTEGER PRIMARY KEY AUTOINCREMENT,"
                    "[FIO] NVARCHAR(50),"
                    "[ID_Club] INT,"
                    "[Sex] INT,"
                    "[Age] INT)") ||
        !query.exec("CREATE TABLE [Club]("
-                   "[ID_Club] INT PRIMARY KEY ON CONFLICT REPLACE,"
+                   "ID_Club INTEGER PRIMARY KEY AUTOINCREMENT,"
                    "[Name] NVARCHAR(50));") ||
        !query.exec("CREATE TABLE [Sex]("
                         "[ID_Sex] INT PRIMARY KEY ON CONFLICT REPLACE,"
