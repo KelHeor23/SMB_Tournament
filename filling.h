@@ -17,6 +17,9 @@ public:
     explicit Filling(QWidget *parent = nullptr);
     ~Filling();
 
+private slots:
+    void on_pushButton_released();
+
 private:
     Ui::Filling *ui;
 
