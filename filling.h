@@ -18,7 +18,7 @@ public:
     ~Filling();
     void m_Per();
     void m_Club();
-
+    int autoNomination(int age, int id_Sex);
 
 private slots:
     void on_pushButton_released();

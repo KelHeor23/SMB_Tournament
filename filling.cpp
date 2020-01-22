@@ -89,3 +89,17 @@ void Filling::m_Club()
     ui->tableClubs->horizontalHeader()->setStretchLastSection(true);
     ui->tableClubs->resizeColumnsToContents();
 }
+
+int Filling::autoNomination(int age,int id_Sex) //Пристрой эту штуку на добавление новой записи в таблицу участников
+{                                               //а сможешь оптимизировать - честь и хвала тебе!!!)
+    int nomination = 0;
+    if (age >= 12 && age <= 13) nomination = 1;
+          else if (age >= 14 && age <= 15) nomination = 2;
+          else if (age >= 16 && age <= 17) nomination = 3;
+          else if (age >= 18 && age <= 24) nomination = 4;
+          else if (age >= 25 && age <= 34) nomination = 5;
+          else if (age >= 35 && age <= 44) nomination = 6;
+          else if (age >= 45) nomination = 7;
+    if (id_Sex == 1) nomination += 7; //если пол женский, то ее номинации начинаются с 8
+    return nomination;
+}
