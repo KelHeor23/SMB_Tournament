@@ -74,28 +74,47 @@ bool DataBase::createTable()
      * */
     QSqlQuery query;
 
-    if(!query.exec("CREATE TABLE [Person]("
+    if(!query.exec("CREATE TABLE [Person]("                                     //Создание таблицы участников
                    "ID_Person INTEGER PRIMARY KEY AUTOINCREMENT,"
                    "[FIO] NVARCHAR(50),"
                    "[ID_Club] INT,"
                    "[Sex] INT,"
-                   "[Age] INT)") ||
-       !query.exec("CREATE TABLE [Club]("
+                   "[Age] INT,"
+                   "[ID_Nomination] INT)") ||
+       !query.exec("CREATE TABLE [Club]("                                      //Создание таблицы клубов
                    "ID_Club INTEGER PRIMARY KEY AUTOINCREMENT,"
-                   "[Name] NVARCHAR(50));") ||
-       !query.exec("CREATE TABLE [Sex]("
-                        "[ID_Sex] INT PRIMARY KEY ON CONFLICT REPLACE,"
-                        "[Name] NVARCHAR(1));"))
+                   "[Name] NVARCHAR(50))") ||
+       !query.exec("CREATE TABLE [Sex]("                                      //Создание таблицы гендеров :) (изменению не подлежит)
+                   "[ID_Sex] INT PRIMARY KEY,"
+                   "[Name] NVARCHAR(1))") ||
+       !query.exec("CREATE TABLE [Nomination]("                              //Создание таблицы номинаций (изменению не подлежит)
+                   "[ID_Nomination] INT PRIMARY KEY,"
+                   "[Name] NVARCHAR(7))"))
     {
         qDebug() << "DataBase: error of create ";
         qDebug() << query.lastError().text();
         return false;
     } else {
         //тестовые данные, перед релизом удалить
-        query.exec("insert into Person (ID_Person, FIO, ID_Club, Sex, Age) values (1, 'Dasha', 1, 1, 1)");
+        query.exec("insert into Person (ID_Person, FIO, ID_Club, Sex, Age, ID_Nomination) values (1, 'Dasha', 1, 1, 13, 1)");
         query.exec("insert into Club (ID_Club, Name) values (1, 'Excalibur')");
-        query.exec("insert into Sex (ID_Sex, Name) values (1, 'Ж')");
-        query.exec("insert into Sex (ID_Sex, Name) values (2, 'М')");
+        query.exec("insert into Sex (ID_Sex, Name) values (1, 'Ж')");  //не удалять константные значения
+        query.exec("insert into Sex (ID_Sex, Name) values (2, 'М')");  //не удалять константные значения
+        query.exec("insert into Nomination (ID_Nomination, Name) values"
+                   "(1, '12-13 М'),"
+                   "(2, '14-15 М'),"
+                   "(3, '16-17 М'),"
+                   "(4, '18-24 М'),"
+                   "(5, '25-34 М'),"
+                   "(6, '35-44 М'),"
+                   "(7, '45+ М'),"
+                   "(8, '12-13 Ж'),"
+                   "(9, '14-15 Ж'),"
+                   "(10, '16-17 Ж'),"
+                   "(11, '18-24 Ж'),"
+                   "(12, '25-34 Ж'),"
+                   "(13, '35-44 Ж'),"
+                   "(14, '45+ Ж')");  //Заполнение таблицы номинаций не удалять константные значения
         return true;
     }
 }

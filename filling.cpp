@@ -53,10 +53,12 @@ void Filling::m_Per()
     modelPersons->setTable("Person");
     modelPersons->setRelation(2, QSqlRelation("Club", "ID_Club", "Name"));
     modelPersons->setRelation(3, QSqlRelation("Sex", "ID_Sex", "Name"));
+    modelPersons->setRelation(5, QSqlRelation("Nomination", "ID_Nomination", "Name"));
     modelPersons->setHeaderData(1, Qt::Horizontal, "ФИО");
     modelPersons->setHeaderData(2, Qt::Horizontal, "Клуб");
     modelPersons->setHeaderData(3, Qt::Horizontal, "Пол");
     modelPersons->setHeaderData(4, Qt::Horizontal, "Возраст");
+    modelPersons->setHeaderData(5, Qt::Horizontal, "Номинация");
 
     ui->tablePersons->setModel(modelPersons);
     ui->tablePersons->setColumnHidden(0, true);    // Скрываем колонку с id записей
