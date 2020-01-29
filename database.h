@@ -21,6 +21,7 @@ public:
     ~DataBase();
     void connectToDataBase();
     bool inserIntoTable(const QVariantList &data);
+    void closeDataBase();
 
 private:
     QSqlDatabase    db;
@@ -28,7 +29,6 @@ private:
 private:
     bool openDataBase();
     bool restoreDataBase();
-    void closeDataBase();
     bool createTable();
 };
 

@@ -30,6 +30,7 @@ Filling::Filling(QWidget *parent) :
 
 Filling::~Filling()
 {
+    db->closeDataBase();
     delete ui;
 }
 
@@ -180,6 +181,7 @@ void Filling::on_toGroupBtn_clicked()
     QVariant idPers = 0;
     int qntGroup = 0;
     int group = 1;
+    int qntRow = 0;
     //modelPersons = new QSqlRelationalTableModel(this);
     //modelPersons->setTable("Persons");
     for (int i = 2; i <= 15; i++)
@@ -188,28 +190,29 @@ void Filling::on_toGroupBtn_clicked()
         modelPersons->setFilter(QString("Nomination = %1").arg(i)); //пробегаемся по всем номинациям
         modelPersons->setSort(2, Qt::AscendingOrder);                  //сортируем по клубам
         ui->tablePersons->setModel(modelPersons);
-
-        if (modelPersons->rowCount() % 4 == 0)                         //считаем кол-во групп, при условии что в группе может быть не больеш 4 человек
-            qntGroup = modelPersons->rowCount() / 4;
+        qntRow = modelPersons->rowCount();
+        if (qntRow % 4 == 0)                         //считаем кол-во групп, при условии что в группе может быть не больеш 4 человек
+            qntGroup = qntRow / 4;
+        else if (qntRow % 3 == 0)
+            qntGroup = qntRow / 3;
         else
-            qntGroup = modelPersons->rowCount() / 3;
+            qntGroup = qntRow / 3 + 1;
 
-        if (qntGroup == 0) qntGroup = 1;
-
-        for (int j = 0; j < modelPersons->rowCount(); j++, group++)
+        for (int j = 0; j < qntRow; j++)
         {
-            if (group == qntGroup) group = 1;                         //группа, в которую поместим человека
             ui->tablePersons->selectRow(j);
             index = ui->tablePersons->model()->index(j, 0, QModelIndex());
             idPers = ui->tablePersons->model()->data(index, Qt::DisplayRole);
-            //query.prepare("UPDATE Person SET Group=1 WHERE ID_Person=1");
-            //query.bindValue(":Group", group);
-            //query.bindValue(":IdPerson", idPers);
-            if (!query.exec("UPDATE Person SET Group=2 WHERE ID=1"))
+            query.prepare("UPDATE Person SET [Group]=:Group WHERE ID=:IdPerson");
+            query.bindValue(":Group", group);
+            query.bindValue(":IdPerson", idPers);
+            if (!query.exec())
             {
                    msgBox.setText("Упс, в назачении группы произошла ошибка");
                    msgBox.exec();
             }
+            (group >= qntGroup) ? group = 1 : group++;
+
         }
     }
     test();
