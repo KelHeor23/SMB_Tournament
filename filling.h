@@ -33,6 +33,8 @@ private slots:
 
     void test2();
 
+    void on_toGroupBtn_clicked();
+
 private:
     Ui::Filling *ui;
 

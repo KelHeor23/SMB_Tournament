@@ -40,6 +40,7 @@ Filling::~Filling()
 void Filling::test() // ЭТО РАБОЧИЙ СЛОТ
 {
     m_Per();                 // Пересоздать модель
+    modelPersons->setFilter(QString("ID_Nomination = %1").arg(2)); //пробегаемся по всем номинациям
     modelPersons->select();  // обновить список клубов
 }
 
@@ -174,4 +175,46 @@ int Filling::autoNomination(int age,int id_Sex) //Пристрой эту шту
           else if (age >= 45) nomination = 8;
     if (id_Sex == 1) nomination += 8; //если пол женский, то ее номинации начинаются с 9
     return nomination;
+}
+
+void Filling::on_toGroupBtn_clicked()
+{
+    QMessageBox msgBox;
+
+    QSqlQuery query;
+    QModelIndex index;
+    QVariant idPers = 0;
+    int qntGroup = 0;
+    int group = 1;
+    //modelPersons = new QSqlRelationalTableModel(this);
+    //modelPersons->setTable("Persons");
+    for (int i = 2; i <= 15; i++)
+    {
+        group = 1;
+        modelPersons->setFilter(QString("ID_Nomination = %1").arg(i)); //пробегаемся по всем номинациям
+        modelPersons->setSort(2, Qt::AscendingOrder);                  //сортируем по клубам
+        ui->tablePersons->setModel(modelPersons);
+
+        if (modelPersons->rowCount() % 4 == 0)                         //считаем кол-во групп, при условии что в группе может быть не больеш 4 человек
+            qntGroup = modelPersons->rowCount() / 4;
+        else
+            qntGroup = modelPersons->rowCount() / 3;
+
+        for (int j = 0; j < modelPersons->rowCount(); j++, group++)
+        {
+            if (group == qntGroup) group = 1;                         //группа, в которую поместим человека
+            ui->tablePersons->selectRow(j);
+            index = ui->tablePersons->model()->index(j, 0, QModelIndex());
+            idPers = ui->tablePersons->model()->data(index, Qt::DisplayRole);
+            query.prepare("UPDATE Person SET Group = :Group WHERE ID_Person = :IdPerson");
+            query.bindValue(":Group", group);
+            query.bindValue(":IdPerson", idPers);
+            if (!query.exec())
+            {
+                   msgBox.setText("Упс, в назачении группы произошла ошибка");
+                   msgBox.exec();
+            }
+        }
+    }
+    test();
 }
