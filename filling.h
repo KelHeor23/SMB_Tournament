@@ -23,6 +23,16 @@ public:
 private slots:
     void on_pushButton_released();
 
+    void on_pushButton_2_released();
+
+    void on_pushButton_3_released();
+
+    void on_pushButton_4_released();
+
+    void test();
+
+    void test2();
+
 private:
     Ui::Filling *ui;
 

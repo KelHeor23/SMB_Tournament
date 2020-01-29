@@ -4,13 +4,16 @@
 #include <QTableView>
 #include <QAbstractTableModel>
 #include <QList>
+#include <QMessageBox>
+
+#include <QModelIndex>
 
 Filling::Filling(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Filling)
 {
-    ui->setupUi(this);
 
+    ui->setupUi(this);
     db = new DataBase();
     db->connectToDataBase();    
 
@@ -23,27 +26,67 @@ Filling::Filling(QWidget *parent) :
     modelClub->setEditStrategy(QSqlTableModel::OnFieldChange);
 }
 
+
+
 Filling::~Filling()
 {
     delete ui;
+
 }
+
+
+
+
+void Filling::test() // ЭТО РАБОЧИЙ СЛОТ
+{
+    m_Per();                 // Пересоздать модель
+    modelPersons->select();  // обновить список клубов
+}
+
+void Filling::test2() // ЭТО ТЕСТОВОЙ СЛОТ
+{
+    QSqlQuery query;
+    //int PersAge    = modelPersons->record(ui->tablePersons->currentIndex().row()).value("Age").toInt();
+     query.exec("UPDATE Person SET ID_Nomination=2 WHERE ID_Nomination=1");
+ //  modelPersons->select();
+}
+
+
 
 void Filling::on_pushButton_released()
 {
-
-    modelClub->insertRow(modelClub->rowCount(QModelIndex()));
-
-    m_Per();                 // обновить список клубов
-    modelPersons->select();  //
-
+    QSqlQuery query;
+    query.exec("insert into Person (FIO, ID_Club, Sex, Age, ID_Nomination) values ('', 1, 1, 13, 1)");
+    modelPersons->submitAll();
+    modelPersons->select();
 }
 
-/* Удаление выбранной строки в tableView
-model->removeRows(ui->modelPersons->currentIndex().row(), 1);
-model->select();
-P.s. надо бы все в одну кнопку, чтоб при нажатии на форму, он менял модель
-*/
+void Filling::on_pushButton_2_released()
+{
+  modelPersons->removeRows(ui->tablePersons->currentIndex().row(), 1);
+  modelPersons->select();
+}
 
+void Filling::on_pushButton_3_released()
+{
+    QSqlQuery query;
+    query.exec("insert into Club (Name) values ('')");
+    modelPersons->submitAll();
+    modelClub->submitAll();
+    modelClub->select();
+}
+
+void Filling::on_pushButton_4_released()
+{
+    int IDclub = ui->tableClubs->currentIndex().row();
+    if (IDclub == 0) {
+        QMessageBox::warning(this, "Внимание","Это поле не подлежит удалению!");
+    } else
+        {
+        modelClub->removeRows(ui->tableClubs->currentIndex().row(), 1);
+        modelClub->select();
+        }
+}
 
 
 //Свернуть их, что б не мешались
@@ -61,17 +104,16 @@ void Filling::m_Per()
     modelPersons->setHeaderData(5, Qt::Horizontal, "Номинация");
 
     ui->tablePersons->setModel(modelPersons);
-    ui->tablePersons->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    ui->tablePersons->setColumnHidden(0, true); // Скрываем колонку с id записей
     ui->tablePersons->setSelectionBehavior(QAbstractItemView::SelectRows);
-    // выделение лишь одно строки в таблице
-    ui->tablePersons->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tablePersons->setSelectionMode(QAbstractItemView::SingleSelection); // выделение лишь одной строки в таблице
     ui->tablePersons->setItemDelegate(new QSqlRelationalDelegate(ui->tablePersons));
-//  ui->tablePersons->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tablePersons->horizontalHeader()->setStretchLastSection(true);
-    // размер колонок по содержимому
-    ui->tablePersons->resizeColumnsToContents();
+    ui->tablePersons->resizeColumnsToContents(); // размер колонок по содержимому
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tablePersons->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+
+    connect(ui->tablePersons->model(),&QAbstractItemModel::dataChanged,this, &Filling::test2); // поймать изменения - тирегрнуть слот test2 не факт что нужно!
 }
 
 void Filling::m_Club()
@@ -85,21 +127,23 @@ void Filling::m_Club()
     ui->tableClubs->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableClubs->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableClubs->setItemDelegate(new QSqlRelationalDelegate(ui->tableClubs));
-//  ui->tableClubs->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableClubs->horizontalHeader()->setStretchLastSection(true);
     ui->tableClubs->resizeColumnsToContents();
+
+//  connect(ui->tableClubs->selectionModel(), SIGNAL(currentChanged(QModelIndex , QModelIndex)), this, SLOT(test()), Qt::DirectConnection); // поймать щелчки по форме - тирегрнуть слот test
+    connect(ui->tableClubs->model(),&QAbstractItemModel::dataChanged,this, &Filling::test); // поймать изменения - тирегрнуть слот test
 }
 
 int Filling::autoNomination(int age,int id_Sex) //Пристрой эту штуку на добавление новой записи в таблицу участников
 {                                               //а сможешь оптимизировать - честь и хвала тебе!!!)
     int nomination = 0;
-    if (age >= 12 && age <= 13) nomination = 1;
-          else if (age >= 14 && age <= 15) nomination = 2;
-          else if (age >= 16 && age <= 17) nomination = 3;
-          else if (age >= 18 && age <= 24) nomination = 4;
-          else if (age >= 25 && age <= 34) nomination = 5;
-          else if (age >= 35 && age <= 44) nomination = 6;
-          else if (age >= 45) nomination = 7;
-    if (id_Sex == 1) nomination += 7; //если пол женский, то ее номинации начинаются с 8
+    if (age >= 12 && age <= 13) nomination = 2;
+          else if (age >= 14 && age <= 15) nomination = 3;
+          else if (age >= 16 && age <= 17) nomination = 4;
+          else if (age >= 18 && age <= 24) nomination = 5;
+          else if (age >= 25 && age <= 34) nomination = 6;
+          else if (age >= 35 && age <= 44) nomination = 7;
+          else if (age >= 45) nomination = 8;
+    if (id_Sex == 1) nomination += 8; //если пол женский, то ее номинации начинаются с 9
     return nomination;
 }

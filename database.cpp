@@ -97,24 +97,25 @@ bool DataBase::createTable()
     } else {
         //тестовые данные, перед релизом удалить
         query.exec("insert into Person (ID_Person, FIO, ID_Club, Sex, Age, ID_Nomination) values (1, 'Dasha', 1, 1, 13, 1)");
-        query.exec("insert into Club (ID_Club, Name) values (1, 'Excalibur')");
-        query.exec("insert into Sex (ID_Sex, Name) values (1, 'Ж')");  //не удалять константные значения
-        query.exec("insert into Sex (ID_Sex, Name) values (2, 'М')");  //не удалять константные значения
+        query.exec("insert into Club (ID_Club, Name) values (1, 'Не указан')");
+        query.exec("insert into Sex (ID_Sex, Name) values (1, 'М')");  //не удалять константные значения
+        query.exec("insert into Sex (ID_Sex, Name) values (2, 'Ж')");  //не удалять константные значения
         query.exec("insert into Nomination (ID_Nomination, Name) values"
-                   "(1, '12-13 М'),"
-                   "(2, '14-15 М'),"
-                   "(3, '16-17 М'),"
-                   "(4, '18-24 М'),"
-                   "(5, '25-34 М'),"
-                   "(6, '35-44 М'),"
-                   "(7, '45+ М'),"
-                   "(8, '12-13 Ж'),"
-                   "(9, '14-15 Ж'),"
-                   "(10, '16-17 Ж'),"
-                   "(11, '18-24 Ж'),"
-                   "(12, '25-34 Ж'),"
-                   "(13, '35-44 Ж'),"
-                   "(14, '45+ Ж')");  //Заполнение таблицы номинаций не удалять константные значения
+                   "(1, 'Авто ввод'),"
+                   "(2, '12-13 М'),"
+                   "(3, '14-15 М'),"
+                   "(4, '16-17 М'),"
+                   "(5, '18-24 М'),"
+                   "(6, '25-34 М'),"
+                   "(7, '35-44 М'),"
+                   "(8, '45+ М'),"
+                   "(9, '12-13 Ж'),"
+                   "(10, '14-15 Ж'),"
+                   "(11, '16-17 Ж'),"
+                   "(12, '18-24 Ж'),"
+                   "(13, '25-34 Ж'),"
+                   "(14, '35-44 Ж'),"
+                   "(15, '45+ Ж')");  //Заполнение таблицы номинаций не удалять константные значения
         return true;
     }
 }
