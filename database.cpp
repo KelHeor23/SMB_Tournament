@@ -75,12 +75,12 @@ bool DataBase::createTable()
     QSqlQuery query;
 
     if(!query.exec("CREATE TABLE [Person]("                                     //Создание таблицы участников
-                   "ID_Person INTEGER PRIMARY KEY AUTOINCREMENT,"
+                   "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                    "[FIO] NVARCHAR(50),"
                    "[ID_Club] INT,"
                    "[Sex] INT,"
                    "[Age] INT,"
-                   "[ID_Nomination] INT,"
+                   "[Nomination] INT,"
                    "[Group] INT)") ||
        !query.exec("CREATE TABLE [Club]("                                      //Создание таблицы клубов
                    "ID_Club INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -97,7 +97,7 @@ bool DataBase::createTable()
         return false;
     } else {
         //тестовые данные, перед релизом удалить
-        query.exec("insert into Person (ID_Person, FIO, ID_Club, Sex, Age, ID_Nomination) values (1, 'Dasha', 1, 1, 13, 2)");
+        query.exec("insert into Person (ID, FIO, ID_Club, Sex, Age, Nomination) values (1, 'Dasha', 1, 1, 13, 1)");
         query.exec("insert into Club (ID_Club, Name) values (1, 'Не указан')");
         query.exec("insert into Sex (ID_Sex, Name) values (1, 'М')");  //не удалять константные значения
         query.exec("insert into Sex (ID_Sex, Name) values (2, 'Ж')");  //не удалять константные значения

@@ -31,16 +31,11 @@ Filling::Filling(QWidget *parent) :
 Filling::~Filling()
 {
     delete ui;
-
 }
-
-
-
 
 void Filling::test() // ЭТО РАБОЧИЙ СЛОТ
 {
     m_Per();                 // Пересоздать модель
-    modelPersons->setFilter(QString("ID_Nomination = %1").arg(2)); //пробегаемся по всем номинациям
     modelPersons->select();  // обновить список клубов
 }
 
@@ -48,7 +43,7 @@ void Filling::test2() // ЭТО ТЕСТОВОЙ СЛОТ
 {
     QSqlQuery query;
     //int PersAge    = modelPersons->record(ui->tablePersons->currentIndex().row()).value("Age").toInt();
-     query.exec("UPDATE Person SET ID_Nomination=2 WHERE ID_Nomination=1");
+     query.exec("UPDATE Person SET Nomination=2 WHERE Nomination=1");
  //  modelPersons->select();
 }
 
@@ -57,7 +52,7 @@ void Filling::test2() // ЭТО ТЕСТОВОЙ СЛОТ
 void Filling::on_pushButton_released()
 {
     QSqlQuery query;
-    query.exec("insert into Person (FIO, ID_Club, Sex, Age, ID_Nomination) values ('', 1, 1, 13, 1)");
+    query.exec("insert into Person (FIO, ID_Club, Sex, Age, Nomination) values ('', 1, 1, 13, 1)");
     modelPersons->submitAll();
     modelPersons->select();
 }
@@ -133,7 +128,7 @@ void Filling::m_Per()
     modelPersons->setHeaderData(5, Qt::Horizontal, "Номинация");
 
     ui->tablePersons->setModel(modelPersons);
-    ui->tablePersons->setColumnHidden(0, true); // Скрываем колонку с id записей
+   //ui->tablePersons->setColumnHidden(0, true); // Скрываем колонку с id записей
     ui->tablePersons->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tablePersons->setSelectionMode(QAbstractItemView::SingleSelection); // выделение лишь одной строки в таблице
     ui->tablePersons->setItemDelegate(new QSqlRelationalDelegate(ui->tablePersons));
@@ -180,7 +175,6 @@ int Filling::autoNomination(int age,int id_Sex) //Пристрой эту шту
 void Filling::on_toGroupBtn_clicked()
 {
     QMessageBox msgBox;
-
     QSqlQuery query;
     QModelIndex index;
     QVariant idPers = 0;
@@ -191,7 +185,7 @@ void Filling::on_toGroupBtn_clicked()
     for (int i = 2; i <= 15; i++)
     {
         group = 1;
-        modelPersons->setFilter(QString("ID_Nomination = %1").arg(i)); //пробегаемся по всем номинациям
+        modelPersons->setFilter(QString("Nomination = %1").arg(i)); //пробегаемся по всем номинациям
         modelPersons->setSort(2, Qt::AscendingOrder);                  //сортируем по клубам
         ui->tablePersons->setModel(modelPersons);
 
@@ -200,16 +194,18 @@ void Filling::on_toGroupBtn_clicked()
         else
             qntGroup = modelPersons->rowCount() / 3;
 
+        if (qntGroup == 0) qntGroup = 1;
+
         for (int j = 0; j < modelPersons->rowCount(); j++, group++)
         {
             if (group == qntGroup) group = 1;                         //группа, в которую поместим человека
             ui->tablePersons->selectRow(j);
             index = ui->tablePersons->model()->index(j, 0, QModelIndex());
             idPers = ui->tablePersons->model()->data(index, Qt::DisplayRole);
-            query.prepare("UPDATE Person SET Group = :Group WHERE ID_Person = :IdPerson");
-            query.bindValue(":Group", group);
-            query.bindValue(":IdPerson", idPers);
-            if (!query.exec())
+            //query.prepare("UPDATE Person SET Group=1 WHERE ID_Person=1");
+            //query.bindValue(":Group", group);
+            //query.bindValue(":IdPerson", idPers);
+            if (!query.exec("UPDATE Person SET Group=2 WHERE ID=1"))
             {
                    msgBox.setText("Упс, в назачении группы произошла ошибка");
                    msgBox.exec();
