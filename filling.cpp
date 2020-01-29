@@ -63,8 +63,22 @@ void Filling::on_pushButton_released()
 
 void Filling::on_pushButton_2_released()
 {
-  modelPersons->removeRows(ui->tablePersons->currentIndex().row(), 1);
-  modelPersons->select();
+    QMessageBox msgBox;
+    msgBox.setText("Вы действительно хотите удалить участника?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Discard);
+    int ret = msgBox.exec();
+    switch (ret) {
+      case QMessageBox::Yes:
+            modelPersons->removeRows(ui->tablePersons->currentIndex().row(), 1);
+            modelPersons->select();
+          break;
+      case QMessageBox::Cancel:
+          break;
+      default:
+          break;
+    }
+
 }
 
 void Filling::on_pushButton_3_released()
@@ -77,15 +91,29 @@ void Filling::on_pushButton_3_released()
 }
 
 void Filling::on_pushButton_4_released()
-{
+{   
     int IDclub = ui->tableClubs->currentIndex().row();
-    if (IDclub == 0) {
-        QMessageBox::warning(this, "Внимание","Это поле не подлежит удалению!");
-    } else
-        {
-        modelClub->removeRows(ui->tableClubs->currentIndex().row(), 1);
-        modelClub->select();
-        }
+    QMessageBox msgBox;
+    msgBox.setText("Вы действительно хотите удалить этот клуб?");
+    msgBox.setInformativeText("Все участники этого клуба будут удалены!");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Discard);
+    int ret = msgBox.exec();
+    switch (ret) {
+      case QMessageBox::Yes:
+                if (IDclub == 0) {
+                    QMessageBox::warning(this, "Внимание","Это поле не подлежит удалению!");
+                    } else
+                        {
+                        modelClub->removeRows(ui->tableClubs->currentIndex().row(), 1);
+                        modelClub->select();
+                        }
+          break;
+      case QMessageBox::Cancel:
+          break;
+      default:
+          break;
+    }
 }
 
 
