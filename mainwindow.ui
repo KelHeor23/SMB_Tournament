@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>798</width>
-    <height>512</height>
+    <width>797</width>
+    <height>508</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,6 +24,19 @@
    </property>
    <property name="text">
     <string>Заполнить таблицу участников</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttleTableBtn">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>170</y>
+     <width>401</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Таблица боев</string>
    </property>
   </widget>
  </widget>

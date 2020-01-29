@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "filling.h"
+#include "battletable.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,8 +20,11 @@ public:
 private slots:
     void on_pushButton_released();
 
+    void on_buttleTableBtn_released();
+
 private:
     Ui::MainWindow *ui;
     Filling *filling;
+    BattleTable *battleTable;
 };
 #endif // MAINWINDOW_H

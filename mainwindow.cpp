@@ -19,3 +19,9 @@ void MainWindow::on_pushButton_released()
     filling = new Filling(this);
     filling->show();
 }
+
+void MainWindow::on_buttleTableBtn_released()
+{
+    battleTable = new BattleTable(this);
+    battleTable->show();
+}
