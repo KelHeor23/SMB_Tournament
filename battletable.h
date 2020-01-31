@@ -2,6 +2,8 @@
 #define BATTLETABLE_H
 
 #include <QDialog>
+#include <QSqlRelationalTableModel>
+#include "database.h"
 
 namespace Ui {
 class BattleTable;
@@ -15,8 +17,14 @@ public:
     explicit BattleTable(QWidget *parent = nullptr);
     ~BattleTable();
 
+private slots:
+    void on_pushButton_released();
+    void BattleTable::insertInToBattlesTable(int idFirstPers, int idSecondPers);
+
 private:
     Ui::BattleTable *ui;
+    QSqlRelationalTableModel *modelPersons;
+    DataBase *db;
 };
 
 #endif // BATTLETABLE_H

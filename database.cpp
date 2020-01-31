@@ -90,7 +90,12 @@ bool DataBase::createTable()
                    "[Name] NVARCHAR(1))") ||
        !query.exec("CREATE TABLE [Nomination]("                              //Создание таблицы номинаций (изменению не подлежит)
                    "[ID_Nomination] INT PRIMARY KEY,"
-                   "[Name] NVARCHAR(7))"))
+                   "[Name] NVARCHAR(7))") ||
+       !query.exec("CREATE TABLE [Battles]("                                 //Создание таблицы боев (Первый боец/Второй боец, прошел ли бой)
+                   "[ID_Battle] INTEGER PRIMARY KEY AUTOINCREMENT,"
+                   "[ID_First_Person] INT,"
+                   "[ID_Second_Person] INT,"
+                   "[IsFinished] BIT)") )
     {
         qDebug() << "DataBase: error of create ";
         qDebug() << query.lastError().text();
