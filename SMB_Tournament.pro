@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    battledetail.cpp \
     battletable.cpp \
     database.cpp \
     filling.cpp \
@@ -24,12 +25,14 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    battledetail.h \
     battletable.h \
     database.h \
     filling.h \
     mainwindow.h
 
 FORMS += \
+    battledetail.ui \
     battletable.ui \
     filling.ui \
     mainwindow.ui

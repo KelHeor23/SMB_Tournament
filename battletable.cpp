@@ -29,6 +29,7 @@ BattleTable::BattleTable(QWidget *parent) :
 
 BattleTable::~BattleTable()
 {
+    delete battleDetail;
     delete ui;
 }
 
@@ -84,4 +85,10 @@ void BattleTable::on_pushButton_released()
             }
         }
     }
+}
+
+void BattleTable::on_tableBattles_doubleClicked(const QModelIndex &index)
+{
+    battleDetail = new BattleDetail(this, 1, "2", 1, "3");
+    battleDetail->show();
 }

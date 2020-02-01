@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete filling;
+    delete battleTable;
     delete ui;
 }
 

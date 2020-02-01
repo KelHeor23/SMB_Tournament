@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSqlRelationalTableModel>
 #include "database.h"
+#include "battledetail.h"
 
 namespace Ui {
 class BattleTable;
@@ -21,9 +22,11 @@ private slots:
     void on_pushButton_released();
     void BattleTable::insertInToBattlesTable(int idFirstPers, int idSecondPers);
 
+    void on_tableBattles_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::BattleTable *ui;
-   // QSqlRelationalTableModel *modelPersons;
+    BattleDetail *battleDetail;
     QSqlRelationalTableModel *modelBattles;
     DataBase *db;
 };
