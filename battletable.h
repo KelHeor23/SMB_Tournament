@@ -23,7 +23,8 @@ private slots:
 
 private:
     Ui::BattleTable *ui;
-    QSqlRelationalTableModel *modelPersons;
+   // QSqlRelationalTableModel *modelPersons;
+    QSqlRelationalTableModel *modelBattles;
     DataBase *db;
 };
 

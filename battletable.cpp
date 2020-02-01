@@ -10,6 +10,21 @@ BattleTable::BattleTable(QWidget *parent) :
     ui->setupUi(this);
     db = new DataBase();
     db->connectToDataBase();
+
+    modelBattles = new QSqlRelationalTableModel(this);
+    modelBattles->setTable("Battles");
+
+    modelBattles->setHeaderData(1, Qt::Horizontal, "Первый боец");
+    modelBattles->setHeaderData(2, Qt::Horizontal, "Второй боец");
+    modelBattles->setRelation(1, QSqlRelation("Person", "ID", "FIO"));
+    modelBattles->setRelation(2, QSqlRelation("Person", "ID", "FIO"));
+
+    ui->tableBattles->setModel(modelBattles);
+    ui->tableBattles->setColumnHidden(0, true);
+    ui->tableBattles->setColumnHidden(3, true);
+
+    modelBattles->select();
+
 }
 
 BattleTable::~BattleTable()
