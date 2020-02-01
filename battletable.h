@@ -20,14 +20,14 @@ public:
 
 private slots:
     void on_pushButton_released();
-    void BattleTable::insertInToBattlesTable(int idFirstPers, int idSecondPers);
-
+    int insertInToBattlesTable(int idFirstPers, int idSecondPers);
     void on_tableBattles_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::BattleTable *ui;
     BattleDetail *battleDetail;
     QSqlRelationalTableModel *modelBattles;
+    QSqlRelationalTableModel *modelBattlesTwo; //стыд
     DataBase *db;
 };
 

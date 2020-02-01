@@ -20,8 +20,10 @@ public:
     explicit DataBase(QObject *parent = 0);
     ~DataBase();
     void connectToDataBase();
-    bool inserIntoTable(const QVariantList &data);
+    //bool inserIntoTable(const QVariantList &data);
     void closeDataBase();
+    QString getNamePerson(int);
+    bool insertIntoBattlesDetail(int, int);
 
 private:
     QSqlDatabase    db;

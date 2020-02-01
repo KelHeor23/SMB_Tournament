@@ -95,7 +95,21 @@ bool DataBase::createTable()
                    "[ID_Battle] INTEGER PRIMARY KEY AUTOINCREMENT,"
                    "[ID_First_Person] INT,"
                    "[ID_Second_Person] INT,"
-                   "[IsFinished] BIT)") )
+                   "[IsFinished] BIT)") ||
+       !query.exec("CREATE TABLE [BattlesDetail]("
+                   "[ID_Battle] INT,"
+                   "[ID_Person] INT,"
+                   "[Round] INT,"
+                   "[Meet1] INT,"
+                   "[Meet2] INT,"
+                   "[Meet3] INT,"
+                   "[Meet4] INT,"
+                   "[Meet5] INT,"
+                   "[Meet6] INT,"
+                   "[Meet7] INT,"
+                   "[Meet8] INT,"
+                   "[Meet9] INT,"
+                   "[Meet10] INT)") )
     {
         qDebug() << "DataBase: error of create ";
         qDebug() << query.lastError().text();
@@ -124,4 +138,35 @@ bool DataBase::createTable()
                    "(15, '45+ Ж')");  //Заполнение таблицы номинаций не удалять константные значения
         return true;
     }
+}
+
+QString DataBase::getNamePerson(int idPers)
+{
+   QSqlQuery query;
+   query.prepare("select FIO from Person where ID = :IDPers");
+   query.bindValue(":IDPers", idPers);
+   if (!query.exec())
+   {
+          qDebug() <<"Упс, не поулчилось получить имя";
+          return "Неизвестное значение";
+   }
+   query.first();
+   return query.value(0).toString();
+}
+
+bool DataBase::insertIntoBattlesDetail(int idBattle, int idPers)
+{
+   QSqlQuery query;
+   query.prepare("insert into BattlesDetail ([ID_Battle], [ID_Person], [Round], [Meet1], [Meet2], [Meet3], [Meet4],[Meet5], [Meet6], [Meet7], [Meet8], [Meet9], [Meet10]) values"
+                 "(:idBattle, :idPers, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),"
+                 "(:idBattle, :idPers, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),"
+                 "(:idBattle, :idPers, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
+   query.bindValue(":idBattle", idBattle);
+   query.bindValue(":idPers", idPers);
+   if (!query.exec())
+   {
+          qDebug() <<"Упс, не получилось создать бои";
+          return false;
+   }
+   return true;
 }

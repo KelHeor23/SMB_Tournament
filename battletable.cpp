@@ -14,6 +14,9 @@ BattleTable::BattleTable(QWidget *parent) :
     modelBattles = new QSqlRelationalTableModel(this);
     modelBattles->setTable("Battles");
 
+    modelBattlesTwo = new QSqlRelationalTableModel(this); //Это пиздец, мне стдыно, придумай как избежать этого
+    modelBattlesTwo->setTable("Battles");
+
     modelBattles->setHeaderData(1, Qt::Horizontal, "Первый боец");
     modelBattles->setHeaderData(2, Qt::Horizontal, "Второй боец");
     modelBattles->setRelation(1, QSqlRelation("Person", "ID", "FIO"));
@@ -23,6 +26,7 @@ BattleTable::BattleTable(QWidget *parent) :
     ui->tableBattles->setColumnHidden(0, true);
     ui->tableBattles->setColumnHidden(3, true);
 
+    modelBattlesTwo->select();
     modelBattles->select();
 
 }
@@ -33,7 +37,7 @@ BattleTable::~BattleTable()
     delete ui;
 }
 
-void BattleTable::insertInToBattlesTable(int idFirstPers, int idSecondPers)
+int BattleTable::insertInToBattlesTable(int idFirstPers, int idSecondPers)
 {
     QSqlQuery query;
     query.prepare("insert into Battles ([ID_First_Person], [ID_Second_Person], [IsFinished]) values (:ID_First_Person, :ID_Second_Person, 0)");
@@ -44,6 +48,7 @@ void BattleTable::insertInToBattlesTable(int idFirstPers, int idSecondPers)
         qDebug() << "DataBase: error of create ";
         qDebug() << query.lastError().text();
     }
+    return query.lastInsertId().toInt();
 }
 
 void BattleTable::on_pushButton_released()
@@ -52,8 +57,9 @@ void BattleTable::on_pushButton_released()
     QSqlQuery queryGetPersons;
     QList <int> persons;
     int group;
-    int idFirstPers;
+    int idFirstPers = 0;
     int idSecondPers = 0;
+    int battleId = 0;
     query.exec("delete from Battles");
     for (int i = 2; i <= 15; i++)
     {
@@ -80,15 +86,20 @@ void BattleTable::on_pushButton_released()
                 for (int k = j + 1; k < persons.length(); k++)
                 {
                     idSecondPers = persons[k];
-                    insertInToBattlesTable(idFirstPers, idSecondPers);
+                    battleId = insertInToBattlesTable(idFirstPers, idSecondPers);
                 }
-            }
+                if (!db->insertIntoBattlesDetail(battleId, idFirstPers) || !db->insertIntoBattlesDetail(battleId, idSecondPers))
+                    qDebug() <<"Упс, произошло что-то нехорошее";
+            }            
         }
     }
 }
 
 void BattleTable::on_tableBattles_doubleClicked(const QModelIndex &index)
 {
-    battleDetail = new BattleDetail(this, 1, "2", 1, "3");
+    int idFirstPerson = modelBattlesTwo->data(modelBattles->index(ui->tableBattles->currentIndex().row(),1)).toInt();
+    int idSecondPerson = modelBattlesTwo->data(modelBattles->index(ui->tableBattles->currentIndex().row(),2)).toInt();
+
+    battleDetail = new BattleDetail(this, idFirstPerson, idSecondPerson);
     battleDetail->show();
 }
