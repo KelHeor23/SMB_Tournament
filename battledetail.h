@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "database.h"
+#include <QSqlTableModel>
 
 namespace Ui {
 class BattleDetail;
@@ -13,7 +14,7 @@ class BattleDetail : public QDialog
     Q_OBJECT
 
 public:
-    explicit BattleDetail(QWidget *parent = nullptr, int = 0, int = 0);
+    explicit BattleDetail(QWidget *parent = nullptr, int = 0,int = 0, int = 0);
     ~BattleDetail();
 
 private:
@@ -25,6 +26,11 @@ private:
     QString firstPersName;
     int secondPersID;
     QString secondPersName;
+    QSqlTableModel *modelFirstRound;
+    QSqlTableModel *modelSecondRound;
+    QSqlTableModel *modelThirdRound;
+
+    void setOptionsModel(QSqlTableModel *model);
 };
 
 #endif // BATTLEDETAIL_H

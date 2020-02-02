@@ -61,6 +61,7 @@ void BattleTable::on_pushButton_released()
     int idSecondPers = 0;
     int battleId = 0;
     query.exec("delete from Battles");
+    query.exec("delete from BattleDetail");
     for (int i = 2; i <= 15; i++)
     {
         query.prepare("select distinct [Group] from Person where Nomination = :Nomination");  //Сначала получаю все группы, которые писутствую в номинации
@@ -88,8 +89,9 @@ void BattleTable::on_pushButton_released()
                     idSecondPers = persons[k];
                     battleId = insertInToBattlesTable(idFirstPers, idSecondPers);
                 }
-                if (!db->insertIntoBattlesDetail(battleId, idFirstPers) || !db->insertIntoBattlesDetail(battleId, idSecondPers))
-                    qDebug() <<"Упс, произошло что-то нехорошее";
+
+                db->insertIntoBattlesDetail(battleId, idFirstPers);
+                db->insertIntoBattlesDetail(battleId, idSecondPers);
             }            
         }
     }
@@ -97,9 +99,10 @@ void BattleTable::on_pushButton_released()
 
 void BattleTable::on_tableBattles_doubleClicked(const QModelIndex &index)
 {
+    int idBattle = modelBattlesTwo->data(modelBattles->index(ui->tableBattles->currentIndex().row(),0)).toInt();
     int idFirstPerson = modelBattlesTwo->data(modelBattles->index(ui->tableBattles->currentIndex().row(),1)).toInt();
     int idSecondPerson = modelBattlesTwo->data(modelBattles->index(ui->tableBattles->currentIndex().row(),2)).toInt();
 
-    battleDetail = new BattleDetail(this, idFirstPerson, idSecondPerson);
+    battleDetail = new BattleDetail(this, idBattle, idFirstPerson, idSecondPerson);
     battleDetail->show();
 }
