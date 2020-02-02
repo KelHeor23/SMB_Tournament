@@ -65,6 +65,7 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
     /*modelFirstRound->select();
     modelSecondRound->select();
     modelThirdRound->select();*/
+    calcTotalWins();
 }
 
 BattleDetail::~BattleDetail()
@@ -99,6 +100,9 @@ void BattleDetail::calcTotalWins()
 
     firstTotalWin += firstPersR1 + firstPersR2 + firstPersR3;
     secondTotalWin += secondPersR1 + secondPersR2 + secondPersR3;
+
+    ui->firstQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(firstTotalWin));
+    ui->secondQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(secondTotalWin));
 }
 
 void BattleDetail::calcWins(QSqlTableModel *model, int round)
@@ -138,7 +142,4 @@ void BattleDetail::calcWins(QSqlTableModel *model, int round)
 void BattleDetail::on_pushButton_released()
 {
     calcTotalWins();
-
-    ui->firstQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(firstTotalWin));
-    ui->secondQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(secondTotalWin));
 }
