@@ -157,27 +157,17 @@ QString DataBase::getNamePerson(int idPers)
 bool DataBase::insertIntoBattlesDetail(int idBattle, int idPers)
 {
    QSqlQuery query;
-   /*QString sql = QString ("SELECT EXISTS (SELECT 1 FROM BattleDetail WHERE [ID_Battle] = %1 and [ID_Person] = %2)")
-           .arg(idBattle)
-           .arg(idPers);
-   query.exec(sql);
-   query.next();
-   if (!query.value(0).toBool())
-   {*/
-        query.prepare("insert into BattleDetail ([ID_Battle], [ID_Person], [Round], [Meet1], [Meet2], [Meet3], [Meet4],[Meet5], [Meet6], [Meet7], [Meet8], [Meet9], [Meet10]) values"
-                      "(:idBattle, :idPers, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),"
-                      "(:idBattle, :idPers, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),"
-                      "(:idBattle, :idPers, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
-        query.bindValue(":idBattle", idBattle);
-        query.bindValue(":idPers", idPers);
-
-        if (!query.exec())
-        {
-               qDebug() <<"Упс, не получилось создать бои";
-               qDebug() << query.lastError().text();
-               return false;
-        }
-        return true;
-   /*}
-   return false;*/
+   query.prepare("insert into BattleDetail ([ID_Battle], [ID_Person], [Round], [Meet1], [Meet2], [Meet3], [Meet4],[Meet5], [Meet6], [Meet7], [Meet8], [Meet9], [Meet10]) values"
+                 "(:idBattle, :idPers, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),"
+                 "(:idBattle, :idPers, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),"
+                 "(:idBattle, :idPers, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
+   query.bindValue(":idBattle", idBattle);
+   query.bindValue(":idPers", idPers);
+   if (!query.exec())
+   {
+          qDebug() <<"Упс, не получилось создать бои";
+          qDebug() << query.lastError().text();
+          return false;
+   }
+   return true;
 }

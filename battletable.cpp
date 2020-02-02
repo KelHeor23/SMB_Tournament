@@ -88,10 +88,10 @@ void BattleTable::on_pushButton_released()
                 {
                     idSecondPers = persons[k];
                     battleId = insertInToBattlesTable(idFirstPers, idSecondPers);
-                }
 
-                db->insertIntoBattlesDetail(battleId, idFirstPers);
-                db->insertIntoBattlesDetail(battleId, idSecondPers);
+                    db->insertIntoBattlesDetail(battleId, idFirstPers);
+                    db->insertIntoBattlesDetail(battleId, idSecondPers);
+                }                              
             }            
         }
     }

@@ -43,15 +43,15 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
 
 
     ui->tableFirstRound->setColumnHidden(0, true);
-    ui->tableFirstRound->setColumnHidden(1, true);
+    //ui->tableFirstRound->setColumnHidden(1, true);
     ui->tableFirstRound->setColumnHidden(2, true);
 
     ui->tableSecondRound->setColumnHidden(0, true);
-    ui->tableSecondRound->setColumnHidden(1, true);
+    //ui->tableSecondRound->setColumnHidden(1, true);
     ui->tableSecondRound->setColumnHidden(2, true);
 
     ui->tableThirdRound->setColumnHidden(0, true);
-    ui->tableThirdRound->setColumnHidden(1, true);
+    //ui->tableThirdRound->setColumnHidden(1, true);
     ui->tableThirdRound->setColumnHidden(2, true);
 
 
@@ -65,6 +65,11 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
     /*modelFirstRound->select();
     modelSecondRound->select();
     modelThirdRound->select();*/
+}
+
+BattleDetail::~BattleDetail()
+{
+    delete ui;
 }
 
 void BattleDetail::setOptionsModel(QSqlTableModel *model)
@@ -83,7 +88,57 @@ void BattleDetail::setOptionsModel(QSqlTableModel *model)
     model->select();
 }
 
-BattleDetail::~BattleDetail()
+void BattleDetail::calcTotalWins()
 {
-    delete ui;
+    firstTotalWin = 0;
+    secondTotalWin = 0;
+
+    calcWins(modelFirstRound, 1);
+    calcWins(modelSecondRound, 2);
+    calcWins(modelThirdRound, 3);
+
+    firstTotalWin += firstPersR1 + firstPersR2 + firstPersR3;
+    secondTotalWin += secondPersR1 + secondPersR2 + secondPersR3;
+}
+
+void BattleDetail::calcWins(QSqlTableModel *model, int round)
+{
+    QModelIndex indexFirst;
+    QModelIndex indexSecond;
+    int qntWinFirst = 0;
+    int qntWinSecond = 0;
+
+    for (int i = 0; i < 10; i++)
+    {
+        indexFirst = model->index(0, i + 3);
+        indexSecond = model->index(1, i + 3);
+
+        if (model->data(indexFirst).toInt() > model->data(indexSecond).toInt())
+            qntWinFirst++;
+        else if (model->data(indexFirst).toInt() < model->data(indexSecond).toInt())
+            qntWinSecond++;
+    }
+    switch(round)
+    {
+    case 1:
+        firstPersR1 = qntWinFirst;
+        secondPersR1 = qntWinSecond;
+        break;
+    case 2:
+        firstPersR2 = qntWinFirst;
+        secondPersR2 = qntWinSecond;
+        break;
+    case 3:
+        firstPersR3 = qntWinFirst;
+        secondPersR3 = qntWinSecond;
+        break;
+    }
+}
+
+void BattleDetail::on_pushButton_released()
+{
+    calcTotalWins();
+
+    ui->firstQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(firstTotalWin));
+    ui->secondQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(secondTotalWin));
 }
