@@ -95,6 +95,7 @@ bool DataBase::createTable()
                    "[ID_Battle] INTEGER PRIMARY KEY AUTOINCREMENT,"
                    "[ID_First_Person] INT,"
                    "[ID_Second_Person] INT,"
+                   "[ID_Winner] INT,"
                    "[IsFinished] BIT)") ||
        !query.exec("CREATE TABLE [BattleDetail]("
                    "[ID_Battle] INT,"

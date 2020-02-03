@@ -6,6 +6,7 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
     ui(new Ui::BattleDetail)
 {
     ui->setupUi(this);
+    Parent = parent;
 
     db = new DataBase();
     db->connectToDataBase();
@@ -17,6 +18,7 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
     paletteFirst.setColor(QPalette::Base, QColor(255,0,0, 50));
     paletteSecond.setColor(QPalette::Base, QColor(0,0,255, 50));
 
+    IdBattle = idBattle;
     firstPersID = firstID;
     firstPersName = db->getNamePerson(firstID);
     secondPersID = secondID;
@@ -26,7 +28,6 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
     ui->firstPersonName->setPalette(paletteFirst);
     ui->secondPersonName->setText(secondPersName);
     ui->secondPersonName->setPalette(paletteSecond);
-
 
     modelFirstRound->setTable("BattleDetail");
     modelFirstRound->setFilter(QString("[ID_Battle] = %1 and [Round] = 1").arg(idBattle));
@@ -54,17 +55,10 @@ BattleDetail::BattleDetail(QWidget *parent, int idBattle, int firstID, int secon
     //ui->tableThirdRound->setColumnHidden(1, true);
     ui->tableThirdRound->setColumnHidden(2, true);
 
-
-
     setOptionsModel(modelFirstRound);
     setOptionsModel(modelSecondRound);
     setOptionsModel(modelThirdRound);
 
-
-
-    /*modelFirstRound->select();
-    modelSecondRound->select();
-    modelThirdRound->select();*/
     calcTotalWins();
 }
 
@@ -93,53 +87,65 @@ void BattleDetail::calcTotalWins()
 {
     firstTotalWin = 0;
     secondTotalWin = 0;
+    fitrstPersonPoints = 0;
+    secondPersonPoints = 0;
 
-    calcWins(modelFirstRound, 1);
-    calcWins(modelSecondRound, 2);
-    calcWins(modelThirdRound, 3);
-
-    firstTotalWin += firstPersR1 + firstPersR2 + firstPersR3;
-    secondTotalWin += secondPersR1 + secondPersR2 + secondPersR3;
+    calcWins(modelFirstRound);
+    calcWins(modelSecondRound);
+    calcWins(modelThirdRound);
 
     ui->firstQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(firstTotalWin));
     ui->secondQntWins->setText(QString("Кол-во выйгранных сходов: %1").arg(secondTotalWin));
+    ui->firstPersonPoints->setText(QString("Кол-во набранных очков: %1").arg(fitrstPersonPoints));
+    ui->secondPersonPoints->setText(QString("Кол-во набранных очков: %1").arg(secondPersonPoints));
 }
 
-void BattleDetail::calcWins(QSqlTableModel *model, int round)
+void BattleDetail::calcWins(QSqlTableModel *model)
 {
     QModelIndex indexFirst;
     QModelIndex indexSecond;
-    int qntWinFirst = 0;
-    int qntWinSecond = 0;
+    int first;
+    int second;
 
     for (int i = 0; i < 10; i++)
     {
         indexFirst = model->index(0, i + 3);
         indexSecond = model->index(1, i + 3);
 
-        if (model->data(indexFirst).toInt() > model->data(indexSecond).toInt())
-            qntWinFirst++;
+        first = model->data(indexFirst).toInt();
+        second = model->data(indexSecond).toInt();
+        if (first > second)
+            firstTotalWin++;
         else if (model->data(indexFirst).toInt() < model->data(indexSecond).toInt())
-            qntWinSecond++;
+            secondTotalWin++;
+
+        fitrstPersonPoints += first;
+        secondPersonPoints += second;
     }
-    switch(round)
-    {
-    case 1:
-        firstPersR1 = qntWinFirst;
-        secondPersR1 = qntWinSecond;
-        break;
-    case 2:
-        firstPersR2 = qntWinFirst;
-        secondPersR2 = qntWinSecond;
-        break;
-    case 3:
-        firstPersR3 = qntWinFirst;
-        secondPersR3 = qntWinSecond;
-        break;
-    }
+
 }
 
 void BattleDetail::on_pushButton_released()
 {
     calcTotalWins();
+}
+
+void BattleDetail::on_pushButton_2_released()
+{
+    QSqlQuery query;
+    int idWinner;
+    (firstTotalWin > secondTotalWin) ? idWinner = firstPersID :
+    (firstTotalWin < secondTotalWin) ? idWinner = secondPersID :
+    (fitrstPersonPoints > secondPersonPoints) ? idWinner = firstPersID :
+    (fitrstPersonPoints < secondPersonPoints) ? idWinner = secondPersID : idWinner = 0;
+
+    query.prepare("update [Battles] set [ID_Winner] = :ID, [IsFinished] = 1 where [ID_Battle] = :ID_Battle");
+    query.bindValue(":ID", idWinner);
+    query.bindValue(":ID_Battle", IdBattle);
+    if (!query.exec())
+    {
+        qDebug() << "DataBase: error of create ";
+        qDebug() << query.lastError().text();
+    }
+    close();
 }

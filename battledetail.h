@@ -20,24 +20,24 @@ public:
 private slots:
     void on_pushButton_released();
 
+    void on_pushButton_2_released();
+
 private:
     Ui::BattleDetail *ui;
+    QWidget *Parent;
     DataBase  *db;
     QPalette paletteFirst;
     QPalette paletteSecond;
+    int IdBattle;
     int firstPersID;
     QString firstPersName;
     int secondPersID;
     QString secondPersName;
 
-    int firstPersR1 = 0;
-    int firstPersR2 = 0;
-    int firstPersR3 = 0;
-    int secondPersR1 = 0;
-    int secondPersR2 = 0;
-    int secondPersR3 = 0;
     int firstTotalWin;
     int secondTotalWin;
+    int fitrstPersonPoints;
+    int secondPersonPoints;
 
 
     QSqlTableModel *modelFirstRound;
@@ -45,7 +45,7 @@ private:
     QSqlTableModel *modelThirdRound;
 
     void setOptionsModel(QSqlTableModel *model);
-    void calcWins(QSqlTableModel *model, int);
+    void calcWins(QSqlTableModel *model);
     void calcTotalWins();
 };
 

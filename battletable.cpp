@@ -24,7 +24,7 @@ BattleTable::BattleTable(QWidget *parent) :
 
     ui->tableBattles->setModel(modelBattles);
     ui->tableBattles->setColumnHidden(0, true);
-    ui->tableBattles->setColumnHidden(3, true);
+    //ui->tableBattles->setColumnHidden(3, true);
 
     modelBattlesTwo->select();
     modelBattles->select();
